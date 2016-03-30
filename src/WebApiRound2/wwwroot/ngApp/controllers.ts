@@ -24,6 +24,7 @@ namespace WebApiRound2.Controllers {
 
     export class BookCreateController {
         public book;
+        public errors;
         constructor(private $http: ng.IHttpService, private $state: ng.ui.IStateService) { }
 
         public saveBook(book): void {
@@ -32,12 +33,14 @@ namespace WebApiRound2.Controllers {
                     this.$state.go("bookList");
                 })
                 .catch((response) => {
+                    this.errors = response.data;
                 })
         }
     }
 
     export class BookEditController {
         public book;
+        public errors;
 
         constructor(private $http: ng.IHttpService, private $stateParams: ng.ui.IStateParamsService, private $state: ng.ui.IStateService) {
             $http.get(`/api/books/${$stateParams["id"]}`)

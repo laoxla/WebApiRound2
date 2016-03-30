@@ -62,10 +62,17 @@ namespace WebApiRound2.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]Book book)
+        public IActionResult Post([FromBody]Book book)
         {
-            _books.Add(book);
-           book.Id = _books.Max(b => b.Id) + 1;
+            if (ModelState.IsValid) {
+                _books.Add(book);
+                book.Id = _books.Max(b => b.Id) + 1;
+                return Ok();
+            }
+            else
+            {
+                return HttpBadRequest(ModelState);
+            }
         }
 
         //
@@ -76,13 +83,21 @@ namespace WebApiRound2.Controllers
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]Book book)
+        public IActionResult Put(int id, [FromBody]Book book)
         {
-            Book dbBook = _books.First(b => b.Id == id);
+            if (ModelState.IsValid)
+            {
+                Book dbBook = _books.First(b => b.Id == id);
             dbBook.Title = book.Title;
             dbBook.Author = book.Author;
             dbBook.Genre = book.Genre;
             dbBook.PageCount = book.PageCount;
+                return Ok();
+            }
+            else
+            {
+                return HttpBadRequest(ModelState);
+            }
 
 
 
