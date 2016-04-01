@@ -58,6 +58,8 @@ namespace WebApiRound2.Controllers {
                     this.$state.go("bookList");
                 })
                 .catch((response) => {
+                    this.errors = response.data;
+
                 })
         }
     }
